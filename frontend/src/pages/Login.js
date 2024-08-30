@@ -2,24 +2,27 @@
 import React, { useState } from 'react';
 import axios from '../services/api';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../redux/authSlice';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('https://task-proindia.onrender.com/api/auth/login', { email, password });
-      console.log(response.data);
-      
-      localStorage.setItem('token', response.data.token);
+    dispatch(loginUser({ email, password }))
+    .unwrap()
+    .then(() => {
       navigate('/');
-    } catch (err) {
-      setError('Invalid credentials');
-    }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
 
   return (
@@ -45,7 +48,6 @@ const Login = () => {
           Login
         </button>
       </form>
-      <Link to= "/register">Link to Sign Up</Link>
     </div>
   );
 };
