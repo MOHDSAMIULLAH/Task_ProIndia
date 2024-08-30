@@ -4,25 +4,25 @@ import axios from '../services/api';
 
 // Fetch tasks from the server
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async () => {
-  const response = await axios.get('http://localhost:5000/api/tasks/');
+  const response = await axios.get('https://task-proindia.onrender.com/api/tasks/');
   return response.data.data;
 });
 
 // Add a new task to the server
 export const addTask = createAsyncThunk('tasks/addTask', async (task) => {
-  const response = await axios.post('http://localhost:5000/api/tasks/', task);
+  const response = await axios.post('https://task-proindia.onrender.com/api/tasks/', task);
   return response.data.data;
 });
 
 // Update an existing task on the server
 export const updateTask = createAsyncThunk('tasks/updateTask', async (task) => {
-  const response = await axios.put(`http://localhost:5000/api/tasks/${task.id}`, task);
+  const response = await axios.put(`https://task-proindia.onrender.com/api/tasks/${task.id}`, task);
   return response.data.data;
 });
 
 // Delete a task from the server
 export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id) => {
-  await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+  await axios.delete(`https://task-proindia.onrender.com/api/tasks/${id}`);
   return id;
 });
 

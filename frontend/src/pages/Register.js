@@ -13,7 +13,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+      const response = await axios.post('https://task-proindia.onrender.com/api/auth/register', { name, email, password });
       console.log(response.data);
       
       navigate('/login');
