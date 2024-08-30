@@ -18,6 +18,7 @@ const Login = () => {
     dispatch(loginUser({ email, password }))
     .unwrap()
     .then(() => {
+      console.log("Login successful: /");
       navigate('/');
     })
     .catch((err) => {
