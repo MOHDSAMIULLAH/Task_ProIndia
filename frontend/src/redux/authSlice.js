@@ -1,5 +1,6 @@
 // src/redux/slices/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 // Initial state for authentication
 const initialState = {
@@ -9,34 +10,17 @@ const initialState = {
   error: null,
 };
 
-// Async thunk for login action (mock example)
-export const loginUser = createAsyncThunk(
-  'auth/loginUser',
-  async (credentials, { rejectWithValue }) => {
-    try {
-      // Replace with actual API call
-      const response = await fakeApiLogin(credentials);
-      const token = response.token;
-      localStorage.setItem('token', token);
-      return token;
-    } catch (err) {
-      return rejectWithValue(err.message);
-    }
-  }
-);
+let BaseUrl = "https://task-proindia.onrender.com"
 
-// Fake API login function (replace with actual API call)
-const fakeApiLogin = (credentials) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (credentials.email === 'test@test.com' && credentials.password === 'password') {
-        resolve({ token: 'fake-jwt-token' });
-      } else {
-        reject(new Error('Invalid credentials'));
-      }
-    }, 1000);
-  });
-};
+export const loginUser = createAsyncThunk('auth/loginUser', async ({ email, password }, thunkAPI) => {
+  try {
+    const response = await axios.post(`${BaseUrl}/api/auth/login`, { email, password });
+    localStorage.setItem('token', response.data.token);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue('Invalid credentials');
+  }
+});
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -51,15 +35,16 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
+        state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.token = action.payload;
         state.isAuthenticated = true;
+        state.token = action.payload.token;
+        state.status = "succeeded";
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.payload;
       });
   },
