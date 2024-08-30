@@ -3,6 +3,8 @@
 
 A simple task management application built with the MERN stack (MongoDB, Express, React, Node.js) that allows users to register, log in, and manage tasks. The app includes features such as task creation, updating, deleting, and viewing tasks with user-friendly authentication and responsive UI.
 
+## Live Demo: https://task-pro-india.vercel.app
+
 ## Features
 
 - **User Authentication**: Users can register and log in using their email and password.
